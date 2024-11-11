@@ -5,34 +5,84 @@
 #include <string.h>
 
 int main(){
-    matrix input, output;
-    matInitZero(&input, 784, 1);
-    matInitZero(&output, 10, 1);
-    const char* file_mnist_test = "./Model/mnist_test.csv";
-    int actual = matLoadCSV(&input, file_mnist_test, 1);
+///////////////// VERSION 3 //////////////////
+    int lineNum;
+    printf("Enter a non positive number to quit \n");
 
-    Layer fc1, fc2;
-    layerInitZero(&fc1, 784, 64);
-    layerInitZero(&fc2, 64, 10);
+    while(1){
+        printf("Enter a line in mnist_test to be tested: ");
+        scanf("%d", &lineNum);
+        if(lineNum <= 0){
+            printf("Quitting...");
+            break;
+        }
+        printf("For element %d in the test dataset:\n", lineNum);
 
-    const char* file_fc1_weights = "./Model/fc1_weights.csv";
-    const char* file_fc1_bias = "./Model/fc1_bias.csv";
-    const char* file_fc2_weights = "./Model/fc2_weights.csv";
-    const char* file_fc2_bias = "./Model/fc2_bias.csv";
+        matrix input, output;
+        matInitZero(&input, 784, 1);
+        matInitZero(&output, 10, 1);
+        const char* file_mnist_test = "./Model/mnist_test.csv";
+        int actual = matLoadCSV(&input, file_mnist_test, lineNum);
 
-    layerLoadData(&fc1, file_fc1_weights, file_fc1_bias);
-    layerLoadData(&fc2, file_fc2_weights, file_fc2_bias);
+        Layer fc1, fc2;
+        layerInitZero(&fc1, 784, 64);
+        layerInitZero(&fc2, 64, 10);
 
-    Forward(&fc1, &fc2, &output, &input);
+        const char* file_fc1_weights = "./Model/fc1_weights.csv";
+        const char* file_fc1_bias = "./Model/fc1_bias.csv";
+        const char* file_fc2_weights = "./Model/fc2_weights.csv";
+        const char* file_fc2_bias = "./Model/fc2_bias.csv";
 
-    matPrint(&output);
-    int predicted = argmax(&output);
+        layerLoadData(&fc1, file_fc1_weights, file_fc1_bias);
+        layerLoadData(&fc2, file_fc2_weights, file_fc2_bias);
 
-    printf("Actual: %d\n", actual);
-    printf("Predicted: %d", predicted);
+        Forward(&fc1, &fc2, &output, &input);
 
-    layerFree(&fc1);
-    layerFree(&fc2);
+        // matPrint(&output);
+        int predicted = argmax(&output);
+
+        printf("Actual: %d\n", actual);
+        printf("Predicted: %d\n", predicted);
+
+        layerFree(&fc1);
+        layerFree(&fc2);
+    }
+    
+    
+
+///////////////// VERSION 2 //////////////////
+    // matrix input, output;
+    // matInitZero(&input, 784, 1);
+    // matInitZero(&output, 10, 1);
+    // const char* file_mnist_test = "./Model/mnist_test.csv";
+    // int actual = matLoadCSV(&input, file_mnist_test, lineNum);
+
+    // Layer fc1, fc2;
+    // layerInitZero(&fc1, 784, 64);
+    // layerInitZero(&fc2, 64, 10);
+
+    // const char* file_fc1_weights = "./Model/fc1_weights.csv";
+    // const char* file_fc1_bias = "./Model/fc1_bias.csv";
+    // const char* file_fc2_weights = "./Model/fc2_weights.csv";
+    // const char* file_fc2_bias = "./Model/fc2_bias.csv";
+
+    // layerLoadData(&fc1, file_fc1_weights, file_fc1_bias);
+    // layerLoadData(&fc2, file_fc2_weights, file_fc2_bias);
+
+    // Forward(&fc1, &fc2, &output, &input);
+
+    // matPrint(&output);
+    // int predicted = argmax(&output);
+
+    // printf("Actual: %d\n", actual);
+    // printf("Predicted: %d", predicted);
+
+    // layerFree(&fc1);
+    // layerFree(&fc2);
+
+
+///////////////// VERSION 1 //////////////////
+
     // matrix input;
     // matInitZero(&input, 784, 1);
     // const char* file_mnist_test = "./Model/mnist_test.csv";
